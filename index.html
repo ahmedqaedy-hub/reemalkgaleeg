@@ -1,221 +1,808 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ريم الخليج - أنظمة الأمن والاتصالات</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>ريم الخليج | أنظمة الأمن والاتصالات</title>
+    <meta name="description" content="ريم الخليج لأنظمة الأمن والاتصالات: كاميرات مراقبة 8MP، أنظمة إنتركم مرئي، سنترالات Panasonic، وأنظمة إنذار وحريق في مسقط.">
+    <meta property="og:title" content="ريم الخليج | أنظمة الأمن والاتصالات">
+    <meta property="og:description" content="حلول حماية متكاملة للمنازل والشركات: كاميرات، إنتركم، سنترالات، وأنظمة إنذار.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --sand: #efe4d1;
+            --cream: #fff8ea;
+            --ink: #1f2937;
+            --ink-soft: #4b5563;
+            --brand: #b91c1c;
+            --brand-dark: #7f1d1d;
+            --accent: #14532d;
+            --surface: #ffffff;
+            --border: #e5d7bf;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
+            margin: 0;
+            font-family: "Cairo", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(1000px 500px at 90% 0%, #f8d5a0 0%, transparent 65%),
+                radial-gradient(900px 480px at 0% 25%, #fde68a 0%, transparent 62%),
+                linear-gradient(145deg, var(--cream), var(--sand));
+            min-height: 100vh;
         }
-        .gradient-bg {
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+
+        .container {
+            width: min(1120px, 92vw);
+            margin-inline: auto;
         }
-        .feature-card {
-            background: rgba(30, 41, 59, 0.5);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, border-color 0.3s ease;
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(10px);
+            background: color-mix(in srgb, #fff 82%, transparent);
+            border-bottom: 1px solid var(--border);
         }
-        .feature-card:hover {
+
+        .topbar-inner {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            font-size: clamp(1.15rem, 2vw, 1.65rem);
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            color: var(--brand-dark);
+        }
+
+        .top-cta {
+            text-decoration: none;
+            background: var(--brand);
+            color: #fff;
+            border-radius: 999px;
+            padding: 10px 18px;
+            font-weight: 700;
+            transition: transform .25s ease, box-shadow .25s ease;
+            box-shadow: 0 8px 20px rgba(185, 28, 28, 0.28);
+        }
+
+        .top-cta:hover {
+            transform: translateY(-2px);
+        }
+
+        .admin-link {
+            text-decoration: none;
+            color: var(--ink);
+            border: 1px solid var(--border);
+            background: #fff;
+            border-radius: 999px;
+            padding: 9px 14px;
+            font-weight: 700;
+        }
+
+        .hero {
+            padding: 64px 0 40px;
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .panel {
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            background: color-mix(in srgb, var(--surface) 86%, transparent);
+            box-shadow: 0 18px 40px rgba(77, 46, 5, 0.08);
+        }
+
+        .hero-main {
+            padding: clamp(22px, 4vw, 40px);
+            animation: rise .7s ease-out both;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #fee2e2;
+            color: var(--brand-dark);
+            border: 1px solid #fecaca;
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-weight: 800;
+            font-size: .95rem;
+        }
+
+        h1 {
+            margin: 16px 0 14px;
+            font-size: clamp(1.8rem, 5.5vw, 3.7rem);
+            line-height: 1.15;
+            font-weight: 900;
+            color: #111827;
+        }
+
+        .hero-main p {
+            margin: 0;
+            color: var(--ink-soft);
+            font-size: clamp(1rem, 2.25vw, 1.25rem);
+            line-height: 1.85;
+        }
+
+        .hero-actions {
+            margin-top: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 11px 17px;
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .btn-primary {
+            background: var(--brand);
+            color: #fff;
+            box-shadow: 0 10px 22px rgba(185, 28, 28, .25);
+        }
+
+        .btn-secondary {
+            border: 1px solid #d1d5db;
+            color: var(--ink);
+            background: #fff;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero-side {
+            padding: clamp(20px, 3vw, 28px);
+            display: grid;
+            gap: 10px;
+            align-content: center;
+            animation: rise .9s ease-out both;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px dashed #e5d5b2;
+            padding: 10px 0;
+        }
+
+        .metric:last-child {
+            border-bottom: 0;
+        }
+
+        .metric strong {
+            color: var(--brand-dark);
+            font-size: 1.4rem;
+        }
+
+        .section {
+            margin-top: 44px;
+        }
+
+        .section h2 {
+            margin: 0 0 18px;
+            font-size: clamp(1.45rem, 3vw, 2.5rem);
+            font-weight: 900;
+        }
+
+        .section-sub {
+            margin: -2px 0 26px;
+            color: var(--ink-soft);
+            line-height: 1.8;
+            max-width: 64ch;
+        }
+
+        .cards {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 18px;
+            background: color-mix(in srgb, #fff 78%, transparent);
+            transition: transform .28s ease, border-color .28s ease;
+        }
+
+        .card:hover {
             transform: translateY(-5px);
-            border-color: #ef4444;
+            border-color: #fca5a5;
         }
-        .highlight-red {
-            color: #ef4444;
+
+        .card .icon {
+            font-size: 1.6rem;
         }
-        .bg-red-glow {
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+
+        .card h3 {
+            margin: 10px 0 8px;
+            font-size: 1.15rem;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--ink-soft);
+            line-height: 1.8;
+            font-size: .98rem;
+        }
+
+        .split {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .service {
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            padding: 20px;
+            background: linear-gradient(150deg, color-mix(in srgb, #fff 86%, transparent), #f9edd7);
+        }
+
+        .service h3 {
+            margin: 8px 0 10px;
+            font-size: 1.4rem;
+        }
+
+        .service p {
+            margin: 0;
+            color: var(--ink-soft);
+            line-height: 1.8;
+        }
+
+        .pill-list {
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pill {
+            border: 1px solid #f5d6aa;
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: .92rem;
+            background: #fff7e8;
+        }
+
+        .offer {
+            margin-top: 42px;
+            border: 1px solid #fca5a5;
+            background: linear-gradient(140deg, #ef4444, #991b1b);
+            color: #fff;
+            border-radius: 28px;
+            padding: clamp(20px, 4vw, 34px);
+            box-shadow: 0 24px 45px rgba(127, 29, 29, .33);
+        }
+
+        .offer h2 {
+            margin: 0;
+            font-size: clamp(1.45rem, 4vw, 2.8rem);
+        }
+
+        .offer p {
+            margin: 10px 0 0;
+            line-height: 1.9;
+            color: #fee2e2;
+        }
+
+        .gallery {
+            margin-top: 40px;
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .work {
+            min-height: 170px;
+            border-radius: 22px;
+            border: 1px solid var(--border);
+            background: linear-gradient(155deg, #fff, #f7edd9);
+            padding: 18px;
+            display: grid;
+            gap: 6px;
+            align-content: end;
+            transition: transform .26s ease;
+        }
+
+        .work:hover {
+            transform: translateY(-4px);
+        }
+
+        .work h4 {
+            margin: 0;
+            font-size: 1.05rem;
+        }
+
+        .work p {
+            margin: 0;
+            color: var(--ink-soft);
+            font-size: .94rem;
+        }
+
+        .projects-toolbar {
+            margin-top: 12px;
+            color: var(--ink-soft);
+            font-size: .95rem;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .projects-grid {
+            margin-top: 22px;
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .project-card {
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0 10px 22px rgba(15, 23, 42, .06);
+        }
+
+        .project-slider {
+            position: relative;
+            aspect-ratio: 16/10;
+            background: #f3f4f6;
+        }
+
+        .project-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            background: color-mix(in srgb, #111827 76%, transparent);
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.05rem;
+            line-height: 1;
+        }
+
+        .slider-btn:hover {
+            background: #111827;
+        }
+
+        .slider-prev {
+            right: 10px;
+        }
+
+        .slider-next {
+            left: 10px;
+        }
+
+        .slide-count {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            background: color-mix(in srgb, #111827 74%, transparent);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: .82rem;
+        }
+
+        .project-info {
+            padding: 12px 14px 14px;
+        }
+
+        .project-info h4 {
+            margin: 0 0 4px;
+            font-size: 1.02rem;
+        }
+
+        .project-info p {
+            margin: 0;
+            color: var(--ink-soft);
+            font-size: .93rem;
+        }
+
+        .contact {
+            margin: 50px 0 28px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            padding: clamp(20px, 4vw, 36px);
+            background: color-mix(in srgb, #fff 80%, transparent);
+            text-align: center;
+        }
+
+        .contact h2 {
+            margin: 0 0 12px;
+            font-size: clamp(1.4rem, 4.3vw, 2.35rem);
+        }
+
+        .contact-grid {
+            margin-top: 18px;
+            display: grid;
+            gap: 12px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .contact-card {
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 16px;
+            background: #fff;
+            transition: transform .22s ease, border-color .22s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+            border-color: #86efac;
+        }
+
+        .contact-card b {
+            display: block;
+            margin-top: 7px;
+            font-size: 1.18rem;
+        }
+
+        .address {
+            margin-top: 14px;
+            color: var(--ink-soft);
+            line-height: 1.9;
+        }
+
+        footer {
+            text-align: center;
+            color: #6b7280;
+            padding: 16px 12px 28px;
+            font-size: .93rem;
+        }
+
+        .float {
+            position: fixed;
+            left: 16px;
+            bottom: 16px;
+            z-index: 60;
+            display: grid;
+            gap: 8px;
+        }
+
+        .float a {
+            width: 52px;
+            height: 52px;
+            border-radius: 999px;
+            text-decoration: none;
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+            color: #fff;
+            box-shadow: 0 10px 22px rgba(15, 23, 42, .22);
+            transition: transform .2s ease;
+        }
+
+        .float a:hover {
+            transform: scale(1.08);
+        }
+
+        .float .wa {
+            background: #15803d;
+        }
+
+        .float .call {
+            background: var(--brand);
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 980px) {
+            .hero-grid,
+            .cards,
+            .split,
+            .gallery,
+            .projects-grid,
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .topbar-inner {
+                min-height: 66px;
+            }
+
+            .top-cta {
+                padding: 9px 13px;
+                font-size: .92rem;
+            }
+
+            .hero {
+                padding-top: 36px;
+            }
+
+            .hero-grid,
+            .cards,
+            .split,
+            .gallery,
+            .projects-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .float {
+                left: 12px;
+                bottom: 12px;
+            }
         }
     </style>
 </head>
-<body class="gradient-bg min-h-screen">
-    <header class="py-12 px-4 text-center border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
-        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-2 text-white drop-shadow-lg">ريم الخليج</h1>
-        <p class="text-xl md:text-2xl text-red-500 font-medium">لأنظمة الأمن والاتصالات والشبكات</p>
+<body>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <div class="logo">ريم الخليج</div>
+            <div class="top-actions">
+                <a class="admin-link" href="admin.html" aria-label="فتح صفحة إدارة المشاريع">لوحة الأدمن</a>
+                <a class="top-cta" href="#contact">احجز معاينة مجانية</a>
+            </div>
+        </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-12">
-        <!-- Hero Section: Hikvision 8MP -->
-        <section class="mb-32 text-center relative overflow-hidden py-16 rounded-[3rem] border border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950">
-            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-red-600/10 blur-[100px] rounded-full"></div>
-            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full"></div>
-            
-            <div class="relative z-10">
-                <div class="inline-block bg-red-600 text-white px-8 py-2.5 rounded-full text-lg font-black mb-8 animate-pulse shadow-lg shadow-red-600/20">
-                    عرض خاص 4K
-                </div>
-                <h2 class="text-4xl md:text-7xl font-black mb-8 leading-tight">كاميرات HIKVISION <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">8 ميجا بكسل</span></h2>
-                <p class="text-xl md:text-3xl text-gray-400 max-w-4xl mx-auto mb-16 px-4">
-                    دقة فائقة الوضوح تغنيك عن الحارس التقليدي. التكنولوجيا الأذكى لحماية منزلك وعملك على مدار الساعة.
-                </p>
-                
-                <!-- Features Grid -->
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-12 px-6">
-                    <div class="feature-card p-8 rounded-[2rem] text-center bg-slate-800/40 hover:bg-slate-800/60">
-                        <div class="text-4xl mb-4">🌙</div>
-                        <h3 class="font-bold text-lg mb-2">ColorVu</h3>
-                        <p class="text-sm text-gray-400">رؤية ليلية ملونة 24/7</p>
+    <main class="container">
+        <section class="hero">
+            <div class="hero-grid">
+                <article class="panel hero-main">
+                    <span class="badge">عرض خاص: كاميرات 8MP 4K</span>
+                    <h1>أنظمة حماية واتصالات تبقي منزلك وعملك تحت السيطرة</h1>
+                    <p>
+                        نوفر كاميرات Hikvision عالية الدقة، أنظمة إنتركم مرئي، سنترالات Panasonic، وأنظمة إنذار متكاملة
+                        بتنفيذ احترافي وخدمة مستمرة في مسقط.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="https://wa.me/96879539487" aria-label="تواصل عبر واتساب">💬 واتساب مباشر</a>
+                        <a class="btn btn-secondary" href="tel:+96879539487" aria-label="اتصال هاتفي مباشر">📞 اتصال فوري</a>
                     </div>
-                    <div class="feature-card p-8 rounded-[2rem] text-center bg-slate-800/40 hover:bg-slate-800/60">
-                        <div class="text-4xl mb-4">🖼️</div>
-                        <h3 class="font-bold text-lg mb-2">8MP 4K</h3>
-                        <p class="text-sm text-gray-400">وضوح مذهل Ultra HD</p>
-                    </div>
-                    <div class="feature-card p-8 rounded-[2rem] text-center bg-slate-800/40 hover:bg-slate-800/60">
-                        <div class="text-4xl mb-4">🤖</div>
-                        <h3 class="font-bold text-lg mb-2">AcuSense</h3>
-                        <p class="text-sm text-gray-400">تحليل ذكي للبشر والسيارات</p>
-                    </div>
-                    <div class="feature-card p-8 rounded-[2rem] text-center bg-slate-800/40 hover:bg-slate-800/60">
-                        <div class="text-4xl mb-4">⛈️</div>
-                        <h3 class="font-bold text-lg mb-2">IP67</h3>
-                        <p class="text-sm text-gray-400">تحمل أقصى الظروف الجوية</p>
-                    </div>
-                    <div class="feature-card p-8 rounded-[2rem] text-center bg-slate-800/40 hover:bg-slate-800/60">
-                        <div class="text-4xl mb-4">💡</div>
-                        <h3 class="font-bold text-lg mb-2">120dB WDR</h3>
-                        <p class="text-sm text-gray-400">صور واضحة تحت ضوء الشمس</p>
-                    </div>
-                    <div class="feature-card p-8 rounded-[2rem] text-center bg-slate-800/40 hover:bg-slate-800/60">
-                        <div class="text-4xl mb-4">📡</div>
-                        <h3 class="font-bold text-lg mb-2">H.265+</h3>
-                        <p class="text-sm text-gray-400">توفير مساحة التخزين</p>
-                    </div>
-                </div>
+                </article>
+
+                <aside class="panel hero-side" aria-label="مؤشرات سريعة">
+                    <div class="metric"><span>دقة الكاميرات</span><strong>8MP</strong></div>
+                    <div class="metric"><span>رؤية ليلية</span><strong>ColorVu</strong></div>
+                    <div class="metric"><span>تحليل ذكي</span><strong>AcuSense</strong></div>
+                    <div class="metric"><span>تحمل مناخي</span><strong>IP67</strong></div>
+                    <div class="metric"><span>ضغط التخزين</span><strong>H.265+</strong></div>
+                </aside>
             </div>
         </section>
 
-        <!-- Solutions Grid -->
-        <div class="grid lg:grid-cols-2 gap-12 mb-32">
-            <!-- Intercom -->
-            <div class="group relative feature-card p-12 rounded-[3rem] overflow-hidden border-2 border-slate-800 hover:border-red-600/50 transition-all duration-500">
-                <div class="absolute top-0 right-0 p-8 text-6xl opacity-20 group-hover:scale-110 transition-transform">🏘️</div>
-                <h3 class="text-3xl font-black mb-6">أنظمة الإنتركم المرئي</h3>
-                <p class="text-xl text-gray-400 mb-8 leading-relaxed">تحكم في مدخل منزلك بضغطة زر. شاشات لمس عالية الدقة تدعم الاتصال بالهاتف الذكي.</p>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="flex items-center gap-3 bg-slate-900/50 p-4 rounded-2xl">
-                        <span class="text-red-500 font-bold">●</span> 📱 تحكم عن بعد
-                    </div>
-                    <div class="flex items-center gap-3 bg-slate-900/50 p-4 rounded-2xl">
-                        <span class="text-red-500 font-bold">●</span> 📹 رؤية ليلية HD
-                    </div>
-                    <div class="flex items-center gap-3 bg-slate-900/50 p-4 rounded-2xl">
-                        <span class="text-red-500 font-bold">●</span> 🎤 صوت ثنائي
-                    </div>
-                    <div class="flex items-center gap-3 bg-slate-900/50 p-4 rounded-2xl">
-                        <span class="text-red-500 font-bold">●</span> 🔐 فتح القفل ذكي
-                    </div>
-                </div>
+        <section class="section">
+            <h2>مميزات أنظمة المراقبة</h2>
+            <p class="section-sub">حلول مصممة للوضوح العالي، متابعة حية من الجوال، وتنبيهات دقيقة للأشخاص والمركبات.</p>
+            <div class="cards">
+                <article class="card"><div class="icon">🌙</div><h3>ColorVu 24/7</h3><p>رؤية ليلية ملونة حتى في الإضاءة الضعيفة للغاية.</p></article>
+                <article class="card"><div class="icon">🖼️</div><h3>Ultra HD 4K</h3><p>تفاصيل دقيقة تساعدك على التحقق بسرعة ووضوح.</p></article>
+                <article class="card"><div class="icon">🤖</div><h3>ذكاء تحليلي</h3><p>تمييز ذكي بين الأشخاص والمركبات وتقليل الإنذارات الخاطئة.</p></article>
+                <article class="card"><div class="icon">💡</div><h3>WDR 120dB</h3><p>صورة متوازنة في الإضاءة القوية والمناطق المظللة.</p></article>
             </div>
+        </section>
 
-            <!-- PBX -->
-            <div class="group relative feature-card p-12 rounded-[3rem] overflow-hidden border-2 border-slate-800 hover:border-blue-600/50 transition-all duration-500">
-                <div class="absolute top-0 right-0 p-8 text-6xl opacity-20 group-hover:scale-110 transition-transform">📞</div>
-                <h3 class="text-3xl font-black mb-6">سنترالات Panasonic</h3>
-                <p class="text-xl text-gray-400 mb-8 leading-relaxed">أنظمة PBX الاحترافية للشركات والمكاتب. جودة يابانية تضمن استمرارية أعمالك وكفاءة اتصالاتك.</p>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="flex items-center gap-3 bg-slate-900/50 p-4 rounded-2xl">
-                        <span class="text-blue-500 font-bold">●</span> 📟 هواتف رقمية
+        <section class="section">
+            <h2>الخدمات الرئيسية</h2>
+            <div class="split">
+                <article class="service">
+                    <div>🏘️</div>
+                    <h3>أنظمة الإنتركم المرئي</h3>
+                    <p>تحكم كامل في مداخل الفلل والمباني مع شاشات لمس، صوت ثنائي الاتجاه، وربط مع الهاتف الذكي.</p>
+                    <div class="pill-list">
+                        <span class="pill">تحكم عن بعد</span>
+                        <span class="pill">رؤية ليلية HD</span>
+                        <span class="pill">فتح قفل ذكي</span>
                     </div>
-                    <div class="flex items-center gap-3 bg-slate-900/50 p-4 rounded-2xl">
-                        <span class="text-blue-500 font-bold">●</span> 🔀 إدارة تحويلات
+                </article>
+                <article class="service">
+                    <div>☎️</div>
+                    <h3>سنترالات Panasonic</h3>
+                    <p>حلول PBX عملية للشركات والمكاتب مع جودة اتصال ثابتة وإدارة تحويلات مرنة.</p>
+                    <div class="pill-list">
+                        <span class="pill">هواتف رقمية</span>
+                        <span class="pill">تحويل تلقائي</span>
+                        <span class="pill">حلول مؤسسية</span>
                     </div>
-                    <div class="flex items-center gap-3 bg-slate-900/50 p-4 rounded-2xl">
-                        <span class="text-blue-500 font-bold">●</span> 🔊 صوت نقي جداً
-                    </div>
-                    <div class="flex items-center gap-3 bg-slate-900/50 p-4 rounded-2xl">
-                        <span class="text-blue-500 font-bold">●</span> 🏢 حلول مؤسسية
-                    </div>
-                </div>
+                </article>
             </div>
-        </div>
+        </section>
 
-        <!-- Security Package -->
-        <section class="mb-32 p-16 rounded-[4rem] bg-gradient-to-br from-red-600 to-red-800 text-white text-center shadow-2xl shadow-red-900/40">
-            <h2 class="text-4xl md:text-6xl font-black mb-8">باقة الأمان الكامل</h2>
-            <p class="text-2xl text-red-100 max-w-3xl mx-auto mb-12">
-                حل شامل يجمع بين الكاميرات، الإنتركم، وأنظمة الإنذار. احصل على أقصى درجات الحماية بخصم خاص.
+        <section class="offer section" aria-label="باقة الأمان الكامل">
+            <h2>باقة الأمان الكامل</h2>
+            <p>حل شامل يجمع الكاميرات، الإنتركم، أنظمة الإنذار، وكواشف الحريق ضمن تصميم واحد وتكلفة مدروسة.</p>
+        </section>
+
+        <section class="section" id="projects">
+            <h2>أعمالنا المنفذة</h2>
+            <p class="section-sub">هذا القسم ديناميكي بالكامل. يمكنك التحكم بعدد المشاريع وعدد الصور وروابطها من لوحة الأدمن.</p>
+            <div class="projects-toolbar" id="projectsStats"></div>
+            <div class="projects-grid" id="projectsGrid"></div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>اتصل بنا اليوم واستلم عرضك</h2>
+            <div class="contact-grid">
+                <a class="contact-card" href="tel:+96879539487" aria-label="الاتصال على الرقم 96879539487">
+                    📞
+                    <b>+968 7953 9487</b>
+                    <span>اتصال هاتفي مباشر</span>
+                </a>
+                <a class="contact-card" href="https://wa.me/96879539487" aria-label="مراسلة واتساب على الرقم 96879539487">
+                    💬
+                    <b>الدردشة عبر واتساب</b>
+                    <span>متاحون على مدار الساعة</span>
+                </a>
+            </div>
+            <p class="address">
+                📍 المعبيلة - خلف بدر السماء<br>
+                سلطنة عمان - مسقط
             </p>
-            <div class="flex flex-wrap justify-center gap-6">
-                <span class="px-8 py-4 bg-white/10 backdrop-blur-md rounded-2xl font-bold text-xl border border-white/20">🔍 كاميرات 8MP</span>
-                <span class="px-8 py-4 bg-white/10 backdrop-blur-md rounded-2xl font-bold text-xl border border-white/20">🛎️ إنتركم ذكي</span>
-                <span class="px-8 py-4 bg-white/10 backdrop-blur-md rounded-2xl font-bold text-xl border border-white/20">🚨 نظام إنذار</span>
-                <span class="px-8 py-4 bg-white/10 backdrop-blur-md rounded-2xl font-bold text-xl border border-white/20">🔥 كواشف حريق</span>
-            </div>
-        </section>
-
-        <!-- Our Work Section -->
-        <section class="mb-32">
-            <h2 class="text-4xl md:text-6xl font-black mb-16 text-center">أعمالنا المنفذة</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="group relative feature-card aspect-video rounded-3xl overflow-hidden border border-slate-800 hover:border-red-600/50 transition-all duration-500 bg-slate-900 flex items-center justify-center">
-                    <div class="text-6xl group-hover:scale-110 transition-transform">🏢</div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-                        <h4 class="text-xl font-bold">تركيب أنظمة مراقبة متكاملة</h4>
-                        <p class="text-sm text-gray-400">مباني تجارية وحكومية</p>
-                    </div>
-                </div>
-                <div class="group relative feature-card aspect-video rounded-3xl overflow-hidden border border-slate-800 hover:border-red-600/50 transition-all duration-500 bg-slate-900 flex items-center justify-center">
-                    <div class="text-6xl group-hover:scale-110 transition-transform">🏘️</div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-                        <h4 class="text-xl font-bold">تجهيز فلل بالإنتركم والإنذار</h4>
-                        <p class="text-sm text-gray-400">منازل ذكية وحماية فائقة</p>
-                    </div>
-                </div>
-                <div class="group relative feature-card aspect-video rounded-3xl overflow-hidden border border-slate-800 hover:border-red-600/50 transition-all duration-500 bg-slate-900 flex items-center justify-center">
-                    <div class="text-6xl group-hover:scale-110 transition-transform">📞</div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-                        <h4 class="text-xl font-bold">سنترالات باناسونيك للمكاتب</h4>
-                        <p class="text-sm text-gray-400">إدارة اتصالات المؤسسات</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Floating Contact Icons -->
-        <div class="fixed bottom-8 left-8 flex flex-col gap-4 z-[100]">
-            <a href="https://wa.me/96879539487" class="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center text-3xl shadow-2xl hover:scale-110 transition-transform animate-bounce">
-                💬
-            </a>
-            <a href="tel:+96879539487" class="w-16 h-16 bg-red-600 text-white rounded-full flex items-center justify-center text-3xl shadow-2xl hover:scale-110 transition-transform">
-                📞
-            </a>
-        </div>
-
-        <!-- CTA & Contact Info -->
-        <section id="contact" class="text-center py-24 px-8 bg-slate-950 rounded-[4rem] border border-slate-800 shadow-inner">
-            <h2 class="text-4xl md:text-5xl font-black mb-12">اتصل بنا اليوم واستلم عرضك</h2>
-            <div class="flex flex-col md:flex-row justify-center items-center gap-12 mb-16">
-                <a href="tel:+96879539487" class="group flex flex-col items-center gap-4 hover:scale-105 transition-transform">
-                    <div class="w-20 h-20 flex items-center justify-center bg-white/5 rounded-full text-4xl group-hover:bg-red-600 transition-colors">📞</div>
-                    <span class="text-3xl font-black tracking-wider">+968 7953 9487</span>
-                    <span class="text-gray-400">اتصال هاتفي مباشر</span>
-                </a>
-                <a href="https://wa.me/96879539487" class="group flex flex-col items-center gap-4 hover:scale-105 transition-transform">
-                    <div class="w-20 h-20 flex items-center justify-center bg-white/5 rounded-full text-4xl group-hover:bg-green-600 transition-colors">💬</div>
-                    <span class="text-3xl font-black tracking-wider">الدردشة عبر واتساب</span>
-                    <span class="text-gray-400">متاحون على مدار الساعة</span>
-                </a>
-            </div>
-            
-            <div class="pt-12 border-t border-slate-800 max-w-2xl mx-auto">
-                <div class="flex items-center justify-center gap-4 text-2xl text-gray-300 mb-4">
-                    <span class="text-3xl">📍</span>
-                    <span class="font-bold">المعبيلة - خلف بدر السماء</span>
-                </div>
-                <p class="text-gray-500">سلطنة عمان - مسقط</p>
-            </div>
         </section>
     </main>
 
+    <div class="float" aria-label="اختصارات التواصل">
+        <a class="wa" href="https://wa.me/96879539487" aria-label="واتساب">💬</a>
+        <a class="call" href="tel:+96879539487" aria-label="اتصال">📞</a>
+    </div>
 
-    <footer class="py-12 text-center text-gray-600 text-sm border-t border-slate-800">
+    <footer>
         <p>&copy; 2026 ريم الخليج للأنظمة الأمنية. جميع الحقوق محفوظة.</p>
     </footer>
+
+    <script>
+        const STORAGE_KEY = "REEM_PROJECTS_CONFIG_V1";
+        const AUTO_SLIDE_MS = 2600;
+
+        const defaultConfig = {
+            projectLimit: 50,
+            imagesPerProject: 15,
+            projects: Array.from({ length: 12 }, (_, i) => {
+                const num = i + 1;
+                const images = Array.from({ length: 8 }, (_, j) => {
+                    return `https://picsum.photos/seed/reem-${num}-${j + 1}/1200/800`;
+                });
+                return {
+                    title: `مشروع رقم ${num}`,
+                    location: `مسقط - موقع ${num}`,
+                    images
+                };
+            })
+        };
+
+        function loadConfig() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return defaultConfig;
+                const parsed = JSON.parse(raw);
+                return {
+                    projectLimit: Number(parsed.projectLimit) || defaultConfig.projectLimit,
+                    imagesPerProject: Number(parsed.imagesPerProject) || defaultConfig.imagesPerProject,
+                    projects: Array.isArray(parsed.projects) ? parsed.projects : defaultConfig.projects
+                };
+            } catch (err) {
+                return defaultConfig;
+            }
+        }
+
+        const config = loadConfig();
+        const PROJECT_LIMIT = config.projectLimit;
+        const IMAGES_PER_PROJECT = config.imagesPerProject;
+        const projectsData = config.projects;
+
+        const projectsGrid = document.getElementById("projectsGrid");
+        const projectsStats = document.getElementById("projectsStats");
+
+        function safeImages(images) {
+            if (!Array.isArray(images) || images.length === 0) {
+                return ["https://picsum.photos/seed/reem-fallback/1200/800"];
+            }
+            return images.slice(0, IMAGES_PER_PROJECT);
+        }
+
+        function renderProjects(items) {
+            projectsGrid.innerHTML = "";
+            const totalProjects = items.length;
+            const totalImages = items.reduce((sum, p) => sum + safeImages(p.images).length, 0);
+            projectsStats.innerHTML = `
+                <span>عدد المشاريع: <strong>${totalProjects}</strong></span>
+                <span>إجمالي الصور المعروضة: <strong>${totalImages}</strong></span>
+                <span>الصور/المشروع: <strong>حتى ${IMAGES_PER_PROJECT}</strong></span>
+            `;
+
+            items.forEach((project, projectIndex) => {
+                const images = safeImages(project.images);
+                let current = 0;
+
+                const card = document.createElement("article");
+                card.className = "project-card";
+                card.innerHTML = `
+                    <div class="project-slider">
+                        <img src="${images[0]}" alt="${project.title || "مشروع"}" loading="lazy">
+                        <button class="slider-btn slider-prev" type="button" aria-label="الصورة السابقة">❯</button>
+                        <button class="slider-btn slider-next" type="button" aria-label="الصورة التالية">❮</button>
+                        <span class="slide-count">1 / ${images.length}</span>
+                    </div>
+                    <div class="project-info">
+                        <h4>${project.title || "مشروع بدون عنوان"}</h4>
+                        <p>${project.location || "الموقع غير محدد"}</p>
+                    </div>
+                `;
+
+                const img = card.querySelector("img");
+                const prevBtn = card.querySelector(".slider-prev");
+                const nextBtn = card.querySelector(".slider-next");
+                const counter = card.querySelector(".slide-count");
+
+                function updateSlide(index) {
+                    current = (index + images.length) % images.length;
+                    img.src = images[current];
+                    counter.textContent = `${current + 1} / ${images.length}`;
+                }
+
+                prevBtn.addEventListener("click", () => updateSlide(current - 1));
+                nextBtn.addEventListener("click", () => updateSlide(current + 1));
+
+                setInterval(() => {
+                    updateSlide(current + 1);
+                }, AUTO_SLIDE_MS + (projectIndex % 6) * 180);
+
+                projectsGrid.appendChild(card);
+            });
+        }
+
+        renderProjects(projectsData.slice(0, PROJECT_LIMIT));
+    </script>
 </body>
 </html>

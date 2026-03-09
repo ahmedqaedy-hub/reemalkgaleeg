@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الأدمن | ريم الخليج</title>
+    <style>
+        :root {
+            --bg: #f7f1e5;
+            --surface: #ffffff;
+            --ink: #1f2937;
+            --muted: #6b7280;
+            --brand: #b91c1c;
+            --border: #e5d7bf;
+            --ok: #166534;
+            --danger: #991b1b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+            color: var(--ink);
+            background: linear-gradient(150deg, #fff8ea, var(--bg));
+        }
+
+        .container {
+            width: min(1100px, 94vw);
+            margin: 24px auto;
+        }
+
+        .auth-wrap {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            width: min(420px, 92vw);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: #fff;
+            padding: 18px;
+            box-shadow: 0 10px 22px rgba(15, 23, 42, .08);
+        }
+
+        .auth-card h2 {
+            margin: 0 0 8px;
+        }
+
+        .auth-error {
+            color: #991b1b;
+            min-height: 22px;
+            margin-top: 8px;
+            font-size: .92rem;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+        }
+
+        .top a {
+            text-decoration: none;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--ink);
+            border-radius: 999px;
+            padding: 9px 14px;
+            font-weight: 700;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--surface);
+            padding: 14px;
+        }
+
+        .card h2 {
+            margin: 0 0 10px;
+            font-size: 1.1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin: 10px 0 6px;
+            font-size: .95rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            padding: 10px;
+            font: inherit;
+            background: #fff;
+        }
+
+        textarea {
+            min-height: 160px;
+            resize: vertical;
+        }
+
+        .grid2 {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        button {
+            border: 0;
+            border-radius: 999px;
+            padding: 9px 14px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-brand {
+            background: var(--brand);
+            color: #fff;
+        }
+
+        .btn-light {
+            background: #fff;
+            border: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: .9rem;
+            margin-top: 8px;
+            line-height: 1.8;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: .92rem;
+            color: var(--ok);
+            min-height: 22px;
+        }
+
+        .projects-list {
+            margin-top: 14px;
+            display: grid;
+            gap: 10px;
+            max-height: 65vh;
+            overflow: auto;
+        }
+
+        .item {
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 10px;
+            background: #fffcf5;
+        }
+
+        .item-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .item b {
+            font-size: .96rem;
+        }
+
+        .item small {
+            color: var(--muted);
+            display: block;
+            margin-top: 3px;
+        }
+
+        @media (max-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="authWrap" class="auth-wrap">
+        <div class="auth-card">
+            <h2>دخول لوحة الأدمن</h2>
+            <p class="hint">أدخل الرقم السري للمتابعة.</p>
+            <label for="adminPassword">الرقم السري</label>
+            <input id="adminPassword" type="password" placeholder="••••••••">
+            <div class="row">
+                <button id="loginBtn" class="btn-brand" type="button">دخول</button>
+            </div>
+            <div id="authError" class="auth-error"></div>
+        </div>
+    </div>
+
+    <div id="adminApp" class="container" style="display:none;">
+        <div class="top">
+            <h1>لوحة إدارة المشاريع</h1>
+            <div class="row">
+                <a href="index.html">العودة للموقع</a>
+                <button id="logoutBtn" class="btn-light" type="button">تسجيل خروج</button>
+            </div>
+        </div>
+
+        <div class="layout">
+            <section class="card">
+                <h2>الإعدادات العامة</h2>
+                <div class="grid2">
+                    <div>
+                        <label for="projectLimit">عدد المشاريع المعروضة</label>
+                        <input id="projectLimit" type="number" min="1" max="200" value="50">
+                    </div>
+                    <div>
+                        <label for="imagesPerProject">الصور لكل مشروع</label>
+                        <input id="imagesPerProject" type="number" min="1" max="50" value="15">
+                    </div>
+                </div>
+
+                <h2 style="margin-top:16px;">إضافة/تعديل مشروع</h2>
+                <label for="title">اسم المشروع</label>
+                <input id="title" type="text" placeholder="مثال: مشروع فيلا الموالح">
+
+                <label for="location">الموقع</label>
+                <input id="location" type="text" placeholder="مثال: مسقط - الموالح">
+
+                <label for="images">روابط الصور (رابط في كل سطر)</label>
+                <textarea id="images" placeholder="https://example.com/p1.jpg&#10;https://example.com/p2.jpg"></textarea>
+                <p class="hint">يمكنك وضع 15 صورة أو أكثر، وسيتم عرض العدد المحدد في الإعدادات.</p>
+
+                <div class="row">
+                    <button id="saveProjectBtn" class="btn-brand" type="button">حفظ المشروع</button>
+                    <button id="clearFormBtn" class="btn-light" type="button">تفريغ الحقول</button>
+                </div>
+
+                <div class="row">
+                    <button id="saveAllBtn" class="btn-brand" type="button">حفظ كل البيانات</button>
+                    <button id="exportBtn" class="btn-light" type="button">تصدير JSON</button>
+                    <button id="importBtn" class="btn-light" type="button">استيراد JSON</button>
+                    <button id="resetBtn" class="btn-danger" type="button">مسح الكل</button>
+                </div>
+
+                <div class="status" id="status"></div>
+            </section>
+
+            <section class="card">
+                <h2>قائمة المشاريع</h2>
+                <div class="hint" id="stats"></div>
+                <div class="projects-list" id="projectsList"></div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = "REEM_PROJECTS_CONFIG_V1";
+        const ADMIN_AUTH_KEY = "REEM_ADMIN_AUTH_V1";
+        const ADMIN_PASSWORD = "admin123";
+
+        let editIndex = -1;
+        let state = {
+            projectLimit: 50,
+            imagesPerProject: 15,
+            projects: []
+        };
+
+        const el = {
+            projectLimit: document.getElementById("projectLimit"),
+            imagesPerProject: document.getElementById("imagesPerProject"),
+            title: document.getElementById("title"),
+            location: document.getElementById("location"),
+            images: document.getElementById("images"),
+            saveProjectBtn: document.getElementById("saveProjectBtn"),
+            clearFormBtn: document.getElementById("clearFormBtn"),
+            saveAllBtn: document.getElementById("saveAllBtn"),
+            exportBtn: document.getElementById("exportBtn"),
+            importBtn: document.getElementById("importBtn"),
+            resetBtn: document.getElementById("resetBtn"),
+            status: document.getElementById("status"),
+            projectsList: document.getElementById("projectsList"),
+            stats: document.getElementById("stats")
+        };
+        const authEl = {
+            authWrap: document.getElementById("authWrap"),
+            adminApp: document.getElementById("adminApp"),
+            password: document.getElementById("adminPassword"),
+            loginBtn: document.getElementById("loginBtn"),
+            authError: document.getElementById("authError"),
+            logoutBtn: document.getElementById("logoutBtn")
+        };
+
+        function setStatus(text, isError) {
+            el.status.textContent = text;
+            el.status.style.color = isError ? "#991b1b" : "#166534";
+        }
+
+        function showAdminApp() {
+            authEl.authWrap.style.display = "none";
+            authEl.adminApp.style.display = "block";
+        }
+
+        function showAuth() {
+            authEl.adminApp.style.display = "none";
+            authEl.authWrap.style.display = "grid";
+            authEl.password.value = "";
+        }
+
+        function parseImages(text) {
+            return text
+                .split(/\r?\n/)
+                .map((s) => s.trim())
+                .filter(Boolean);
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const parsed = JSON.parse(raw);
+                state.projectLimit = Number(parsed.projectLimit) || 50;
+                state.imagesPerProject = Number(parsed.imagesPerProject) || 15;
+                state.projects = Array.isArray(parsed.projects) ? parsed.projects : [];
+            } catch (err) {
+                setStatus("تعذر قراءة البيانات المحفوظة.", true);
+            }
+        }
+
+        function saveState() {
+            state.projectLimit = Math.max(1, Math.min(200, Number(el.projectLimit.value) || 50));
+            state.imagesPerProject = Math.max(1, Math.min(50, Number(el.imagesPerProject.value) || 15));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function clearForm() {
+            editIndex = -1;
+            el.title.value = "";
+            el.location.value = "";
+            el.images.value = "";
+            el.saveProjectBtn.textContent = "حفظ المشروع";
+        }
+
+        function fillForm(project, index) {
+            editIndex = index;
+            el.title.value = project.title || "";
+            el.location.value = project.location || "";
+            el.images.value = Array.isArray(project.images) ? project.images.join("\n") : "";
+            el.saveProjectBtn.textContent = "تحديث المشروع";
+        }
+
+        function renderList() {
+            el.projectsList.innerHTML = "";
+            el.stats.textContent = `إجمالي المشاريع: ${state.projects.length}`;
+
+            state.projects.forEach((project, index) => {
+                const item = document.createElement("div");
+                item.className = "item";
+                item.innerHTML = `
+                    <div class="item-head">
+                        <div>
+                            <b>${project.title || "بدون عنوان"}</b>
+                            <small>${project.location || "بدون موقع"} | الصور: ${(project.images || []).length}</small>
+                        </div>
+                        <div class="row">
+                            <button class="btn-light" type="button" data-edit="${index}">تعديل</button>
+                            <button class="btn-danger" type="button" data-delete="${index}">حذف</button>
+                        </div>
+                    </div>
+                `;
+                el.projectsList.appendChild(item);
+            });
+        }
+
+        function addOrUpdateProject() {
+            const title = el.title.value.trim();
+            const location = el.location.value.trim();
+            const images = parseImages(el.images.value);
+
+            if (!title) {
+                setStatus("اكتب اسم المشروع.", true);
+                return;
+            }
+            if (images.length === 0) {
+                setStatus("أضف رابط صورة واحد على الأقل.", true);
+                return;
+            }
+
+            const payload = { title, location, images };
+            if (editIndex >= 0) {
+                state.projects[editIndex] = payload;
+                setStatus("تم تحديث المشروع.");
+            } else {
+                state.projects.push(payload);
+                setStatus("تمت إضافة المشروع.");
+            }
+
+            saveState();
+            clearForm();
+            renderList();
+        }
+
+        function exportJSON() {
+            const data = JSON.stringify(state, null, 2);
+            navigator.clipboard.writeText(data)
+                .then(() => setStatus("تم نسخ JSON إلى الحافظة."))
+                .catch(() => setStatus("تعذر النسخ التلقائي. انسخ يدويًا من أدوات المتصفح.", true));
+        }
+
+        function importJSON() {
+            const raw = prompt("ألصق JSON هنا:");
+            if (!raw) return;
+            try {
+                const parsed = JSON.parse(raw);
+                state = {
+                    projectLimit: Number(parsed.projectLimit) || 50,
+                    imagesPerProject: Number(parsed.imagesPerProject) || 15,
+                    projects: Array.isArray(parsed.projects) ? parsed.projects : []
+                };
+                saveState();
+                syncInputs();
+                renderList();
+                setStatus("تم استيراد البيانات بنجاح.");
+            } catch (err) {
+                setStatus("تنسيق JSON غير صحيح.", true);
+            }
+        }
+
+        function syncInputs() {
+            el.projectLimit.value = state.projectLimit;
+            el.imagesPerProject.value = state.imagesPerProject;
+        }
+
+        el.saveProjectBtn.addEventListener("click", addOrUpdateProject);
+        el.clearFormBtn.addEventListener("click", clearForm);
+        el.saveAllBtn.addEventListener("click", () => {
+            saveState();
+            setStatus("تم حفظ كل البيانات. افتح الصفحة الرئيسية وستجد التحديثات.");
+        });
+        el.exportBtn.addEventListener("click", exportJSON);
+        el.importBtn.addEventListener("click", importJSON);
+        el.resetBtn.addEventListener("click", () => {
+            const ok = confirm("هل تريد حذف كل المشاريع والإعدادات؟");
+            if (!ok) return;
+            state.projects = [];
+            saveState();
+            clearForm();
+            renderList();
+            setStatus("تم مسح كل البيانات.");
+        });
+
+        el.projectsList.addEventListener("click", (e) => {
+            const edit = e.target.getAttribute("data-edit");
+            const del = e.target.getAttribute("data-delete");
+
+            if (edit !== null) {
+                fillForm(state.projects[Number(edit)], Number(edit));
+            }
+            if (del !== null) {
+                const idx = Number(del);
+                state.projects.splice(idx, 1);
+                if (editIndex === idx) clearForm();
+                saveState();
+                renderList();
+                setStatus("تم حذف المشروع.");
+            }
+        });
+
+        authEl.loginBtn.addEventListener("click", () => {
+            const pass = authEl.password.value;
+            if (pass !== ADMIN_PASSWORD) {
+                authEl.authError.textContent = "الرقم السري غير صحيح.";
+                return;
+            }
+            localStorage.setItem(ADMIN_AUTH_KEY, "ok");
+            authEl.authError.textContent = "";
+            showAdminApp();
+        });
+
+        authEl.password.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") authEl.loginBtn.click();
+        });
+
+        authEl.logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem(ADMIN_AUTH_KEY);
+            showAuth();
+        });
+
+        loadState();
+        syncInputs();
+        renderList();
+
+        if (localStorage.getItem(ADMIN_AUTH_KEY) === "ok") {
+            showAdminApp();
+        } else {
+            showAuth();
+        }
+    </script>
+</body>
+</html>
