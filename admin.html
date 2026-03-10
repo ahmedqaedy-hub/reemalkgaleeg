@@ -282,8 +282,12 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const STORAGE_KEY = "REEM_PROJECTS_CONFIG_V1";
+        const SUPABASE_URL = "https://tivrcukgaqcxmwrgfzde.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpdnJjdWtnYXFjeG13cmdmemRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNDA0MTAsImV4cCI6MjA4ODcxNjQxMH0.uRbENYPJP9oZZwvymnPeykqZToLtDdAOrvLFbJzlm8s";
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         const ADMIN_AUTH_KEY = "REEM_ADMIN_AUTH_V1";
         const ADMIN_PASSWORD = "admin123";
 
@@ -342,23 +346,56 @@
                 .filter(Boolean);
         }
 
-        function loadState() {
+        async function loadState() {
             try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (!raw) return;
-                const parsed = JSON.parse(raw);
-                state.projectLimit = Number(parsed.projectLimit) || 50;
-                state.imagesPerProject = Number(parsed.imagesPerProject) || 15;
-                state.projects = Array.isArray(parsed.projects) ? parsed.projects : [];
+                const { data: settings } = await supabase
+                    .from("settings")
+                    .select("*")
+                    .eq("id", 1)
+                    .maybeSingle();
+
+                if (!settings) {
+                    await supabase.from("settings").insert({
+                        id: 1,
+                        project_limit: 50,
+                        images_per_project: 15
+                    });
+                }
+
+                const { data: settingsAfter } = await supabase
+                    .from("settings")
+                    .select("*")
+                    .eq("id", 1)
+                    .maybeSingle();
+
+                state.projectLimit = Number(settingsAfter?.project_limit) || 50;
+                state.imagesPerProject = Number(settingsAfter?.images_per_project) || 15;
+
+                const { data: projects } = await supabase
+                    .from("projects")
+                    .select("*")
+                    .order("sort_order", { ascending: true })
+                    .order("created_at", { ascending: true });
+
+                state.projects = (projects || []).map((p) => ({
+                    id: p.id,
+                    title: p.title,
+                    location: p.location,
+                    images: Array.isArray(p.images) ? p.images : []
+                }));
             } catch (err) {
-                setStatus("تعذر قراءة البيانات المحفوظة.", true);
+                setStatus("تعذر قراءة البيانات من Supabase.", true);
             }
         }
 
-        function saveState() {
+        async function saveState() {
             state.projectLimit = Math.max(1, Math.min(200, Number(el.projectLimit.value) || 50));
             state.imagesPerProject = Math.max(1, Math.min(50, Number(el.imagesPerProject.value) || 15));
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            await supabase.from("settings").upsert({
+                id: 1,
+                project_limit: state.projectLimit,
+                images_per_project: state.imagesPerProject
+            }, { onConflict: "id" });
         }
 
         function clearForm() {
@@ -400,7 +437,7 @@
             });
         }
 
-        function addOrUpdateProject() {
+        async function addOrUpdateProject() {
             const title = el.title.value.trim();
             const location = el.location.value.trim();
             const images = parseImages(el.images.value);
@@ -416,14 +453,33 @@
 
             const payload = { title, location, images };
             if (editIndex >= 0) {
-                state.projects[editIndex] = payload;
+                const current = state.projects[editIndex];
+                if (current?.id) {
+                    await supabase.from("projects").update({
+                        title,
+                        location,
+                        images,
+                        sort_order: editIndex
+                    }).eq("id", current.id);
+                    state.projects[editIndex] = { ...payload, id: current.id };
+                } else {
+                    const { data } = await supabase.from("projects")
+                        .insert({ title, location, images, sort_order: editIndex })
+                        .select()
+                        .single();
+                    state.projects[editIndex] = { ...payload, id: data?.id };
+                }
                 setStatus("تم تحديث المشروع.");
             } else {
-                state.projects.push(payload);
+                const { data } = await supabase.from("projects")
+                    .insert({ title, location, images, sort_order: state.projects.length })
+                    .select()
+                    .single();
+                state.projects.push({ ...payload, id: data?.id });
                 setStatus("تمت إضافة المشروع.");
             }
 
-            saveState();
+            await saveState();
             clearForm();
             renderList();
         }
@@ -435,7 +491,7 @@
                 .catch(() => setStatus("تعذر النسخ التلقائي. انسخ يدويًا من أدوات المتصفح.", true));
         }
 
-        function importJSON() {
+        async function importJSON() {
             const raw = prompt("ألصق JSON هنا:");
             if (!raw) return;
             try {
@@ -445,7 +501,8 @@
                     imagesPerProject: Number(parsed.imagesPerProject) || 15,
                     projects: Array.isArray(parsed.projects) ? parsed.projects : []
                 };
-                saveState();
+                await saveState();
+                await syncProjectsToDb();
                 syncInputs();
                 renderList();
                 setStatus("تم استيراد البيانات بنجاح.");
@@ -461,23 +518,25 @@
 
         el.saveProjectBtn.addEventListener("click", addOrUpdateProject);
         el.clearFormBtn.addEventListener("click", clearForm);
-        el.saveAllBtn.addEventListener("click", () => {
-            saveState();
+        el.saveAllBtn.addEventListener("click", async () => {
+            await saveState();
+            await syncProjectsToDb();
             setStatus("تم حفظ كل البيانات. افتح الصفحة الرئيسية وستجد التحديثات.");
         });
         el.exportBtn.addEventListener("click", exportJSON);
         el.importBtn.addEventListener("click", importJSON);
-        el.resetBtn.addEventListener("click", () => {
+        el.resetBtn.addEventListener("click", async () => {
             const ok = confirm("هل تريد حذف كل المشاريع والإعدادات؟");
             if (!ok) return;
             state.projects = [];
-            saveState();
+            await supabase.from("projects").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+            await saveState();
             clearForm();
             renderList();
             setStatus("تم مسح كل البيانات.");
         });
 
-        el.projectsList.addEventListener("click", (e) => {
+        el.projectsList.addEventListener("click", async (e) => {
             const edit = e.target.getAttribute("data-edit");
             const del = e.target.getAttribute("data-delete");
 
@@ -486,15 +545,56 @@
             }
             if (del !== null) {
                 const idx = Number(del);
+                const current = state.projects[idx];
+                if (current?.id) {
+                    await supabase.from("projects").delete().eq("id", current.id);
+                }
                 state.projects.splice(idx, 1);
                 if (editIndex === idx) clearForm();
-                saveState();
+                await saveState();
                 renderList();
                 setStatus("تم حذف المشروع.");
             }
         });
 
-        authEl.loginBtn.addEventListener("click", () => {
+        async function syncProjectsToDb() {
+            const withIds = state.projects.filter((p) => p.id);
+            if (withIds.length > 0) {
+                const payload = withIds.map((p, i) => ({
+                    id: p.id,
+                    title: p.title,
+                    location: p.location,
+                    images: p.images,
+                    sort_order: i
+                }));
+                await supabase.from("projects").upsert(payload, { onConflict: "id" });
+            }
+            const withoutIds = state.projects.filter((p) => !p.id);
+            if (withoutIds.length > 0) {
+                const payload = withoutIds.map((p, i) => ({
+                    title: p.title,
+                    location: p.location,
+                    images: p.images,
+                    sort_order: withIds.length + i
+                }));
+                const { data } = await supabase.from("projects").insert(payload).select();
+                const newIds = data || [];
+                let k = 0;
+                state.projects = state.projects.map((p) => {
+                    if (p.id) return p;
+                    const next = newIds[k++];
+                    return { ...p, id: next?.id };
+                });
+            }
+        }
+
+        async function initApp() {
+            await loadState();
+            syncInputs();
+            renderList();
+        }
+
+        authEl.loginBtn.addEventListener("click", async () => {
             const pass = authEl.password.value;
             if (pass !== ADMIN_PASSWORD) {
                 authEl.authError.textContent = "الرقم السري غير صحيح.";
@@ -503,6 +603,7 @@
             localStorage.setItem(ADMIN_AUTH_KEY, "ok");
             authEl.authError.textContent = "";
             showAdminApp();
+            await initApp();
         });
 
         authEl.password.addEventListener("keydown", (e) => {
@@ -514,12 +615,9 @@
             showAuth();
         });
 
-        loadState();
-        syncInputs();
-        renderList();
-
         if (localStorage.getItem(ADMIN_AUTH_KEY) === "ok") {
             showAdminApp();
+            initApp();
         } else {
             showAuth();
         }

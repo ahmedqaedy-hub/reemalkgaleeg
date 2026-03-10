@@ -701,16 +701,20 @@
         <p>&copy; 2026 ريم الخليج للأنظمة الأمنية. جميع الحقوق محفوظة.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const STORAGE_KEY = "REEM_PROJECTS_CONFIG_V1";
+        const SUPABASE_URL = "https://tivrcukgaqcxmwrgfzde.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpdnJjdWtnYXFjeG13cmdmemRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNDA0MTAsImV4cCI6MjA4ODcxNjQxMH0.uRbENYPJP9oZZwvymnPeykqZToLtDdAOrvLFbJzlm8s";
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         const AUTO_SLIDE_MS = 2600;
 
         const defaultConfig = {
             projectLimit: 50,
             imagesPerProject: 15,
-            projects: Array.from({ length: 12 }, (_, i) => {
+            projects: Array.from({ length: 6 }, (_, i) => {
                 const num = i + 1;
-                const images = Array.from({ length: 8 }, (_, j) => {
+                const images = Array.from({ length: 6 }, (_, j) => {
                     return `https://picsum.photos/seed/reem-${num}-${j + 1}/1200/800`;
                 });
                 return {
@@ -721,25 +725,37 @@
             })
         };
 
-        function loadConfig() {
+        let PROJECT_LIMIT = defaultConfig.projectLimit;
+        let IMAGES_PER_PROJECT = defaultConfig.imagesPerProject;
+        let projectsData = defaultConfig.projects;
+
+        async function loadConfigFromSupabase() {
             try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (!raw) return defaultConfig;
-                const parsed = JSON.parse(raw);
+                const { data: settings } = await supabase
+                    .from("settings")
+                    .select("*")
+                    .eq("id", 1)
+                    .maybeSingle();
+
+                const { data: projects } = await supabase
+                    .from("projects")
+                    .select("*")
+                    .order("sort_order", { ascending: true })
+                    .order("created_at", { ascending: true });
+
                 return {
-                    projectLimit: Number(parsed.projectLimit) || defaultConfig.projectLimit,
-                    imagesPerProject: Number(parsed.imagesPerProject) || defaultConfig.imagesPerProject,
-                    projects: Array.isArray(parsed.projects) ? parsed.projects : defaultConfig.projects
+                    projectLimit: Number(settings?.project_limit) || defaultConfig.projectLimit,
+                    imagesPerProject: Number(settings?.images_per_project) || defaultConfig.imagesPerProject,
+                    projects: (projects || []).map((p) => ({
+                        title: p.title,
+                        location: p.location,
+                        images: Array.isArray(p.images) ? p.images : []
+                    }))
                 };
             } catch (err) {
                 return defaultConfig;
             }
         }
-
-        const config = loadConfig();
-        const PROJECT_LIMIT = config.projectLimit;
-        const IMAGES_PER_PROJECT = config.imagesPerProject;
-        const projectsData = config.projects;
 
         const projectsGrid = document.getElementById("projectsGrid");
         const projectsStats = document.getElementById("projectsStats");
@@ -802,7 +818,13 @@
             });
         }
 
-        renderProjects(projectsData.slice(0, PROJECT_LIMIT));
+        (async () => {
+            const config = await loadConfigFromSupabase();
+            PROJECT_LIMIT = config.projectLimit;
+            IMAGES_PER_PROJECT = config.imagesPerProject;
+            projectsData = config.projects;
+            renderProjects(projectsData.slice(0, PROJECT_LIMIT));
+        })();
     </script>
 </body>
 </html>
