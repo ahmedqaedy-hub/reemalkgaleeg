@@ -285,7 +285,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://tivrcukgaqcxmwrgfzde.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpdnJjdWtnYXFjeG13cmdmemRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNDA0MTAsImV4cCI6MjA4ODcxNjQxMH0.uRbENYPJP9oZZwvymnPeykqZToLtDdAOrvLFbJzlm8s";
+        const SUPABASE_ANON_KEY = "sb_publishable_h7zB-t1tyt0wnlLxDz6wPw_QGBWpxJM";
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const ADMIN_AUTH_KEY = "REEM_ADMIN_AUTH_V1";
@@ -348,34 +348,38 @@
 
         async function loadState() {
             try {
-                const { data: settings } = await supabase
+                const { data: settings, error: settingsErr } = await supabase
                     .from("settings")
                     .select("*")
                     .eq("id", 1)
                     .maybeSingle();
+                if (settingsErr) throw settingsErr;
 
                 if (!settings) {
-                    await supabase.from("settings").insert({
+                    const { error: insertErr } = await supabase.from("settings").insert({
                         id: 1,
                         project_limit: 50,
                         images_per_project: 15
                     });
+                    if (insertErr) throw insertErr;
                 }
 
-                const { data: settingsAfter } = await supabase
+                const { data: settingsAfter, error: settingsAfterErr } = await supabase
                     .from("settings")
                     .select("*")
                     .eq("id", 1)
                     .maybeSingle();
+                if (settingsAfterErr) throw settingsAfterErr;
 
                 state.projectLimit = Number(settingsAfter?.project_limit) || 50;
                 state.imagesPerProject = Number(settingsAfter?.images_per_project) || 15;
 
-                const { data: projects } = await supabase
+                const { data: projects, error: projectsErr } = await supabase
                     .from("projects")
                     .select("*")
                     .order("sort_order", { ascending: true })
                     .order("created_at", { ascending: true });
+                if (projectsErr) throw projectsErr;
 
                 state.projects = (projects || []).map((p) => ({
                     id: p.id,
@@ -391,11 +395,12 @@
         async function saveState() {
             state.projectLimit = Math.max(1, Math.min(200, Number(el.projectLimit.value) || 50));
             state.imagesPerProject = Math.max(1, Math.min(50, Number(el.imagesPerProject.value) || 15));
-            await supabase.from("settings").upsert({
+            const { error: upsertErr } = await supabase.from("settings").upsert({
                 id: 1,
                 project_limit: state.projectLimit,
                 images_per_project: state.imagesPerProject
             }, { onConflict: "id" });
+            if (upsertErr) setStatus("فشل حفظ الإعدادات في Supabase.", true);
         }
 
         function clearForm() {
@@ -455,26 +460,29 @@
             if (editIndex >= 0) {
                 const current = state.projects[editIndex];
                 if (current?.id) {
-                    await supabase.from("projects").update({
+                    const { error: updateErr } = await supabase.from("projects").update({
                         title,
                         location,
                         images,
                         sort_order: editIndex
                     }).eq("id", current.id);
+                    if (updateErr) throw updateErr;
                     state.projects[editIndex] = { ...payload, id: current.id };
                 } else {
-                    const { data } = await supabase.from("projects")
+                    const { data, error: insertErr } = await supabase.from("projects")
                         .insert({ title, location, images, sort_order: editIndex })
                         .select()
                         .single();
+                    if (insertErr) throw insertErr;
                     state.projects[editIndex] = { ...payload, id: data?.id };
                 }
                 setStatus("تم تحديث المشروع.");
             } else {
-                const { data } = await supabase.from("projects")
+                const { data, error: insertErr } = await supabase.from("projects")
                     .insert({ title, location, images, sort_order: state.projects.length })
                     .select()
                     .single();
+                if (insertErr) throw insertErr;
                 state.projects.push({ ...payload, id: data?.id });
                 setStatus("تمت إضافة المشروع.");
             }
@@ -507,7 +515,7 @@
                 renderList();
                 setStatus("تم استيراد البيانات بنجاح.");
             } catch (err) {
-                setStatus("تنسيق JSON غير صحيح.", true);
+                setStatus("تنسيق JSON غير صحيح أو فشل الحفظ.", true);
             }
         }
 
@@ -529,7 +537,8 @@
             const ok = confirm("هل تريد حذف كل المشاريع والإعدادات؟");
             if (!ok) return;
             state.projects = [];
-            await supabase.from("projects").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+            const { error: delErr } = await supabase.from("projects").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+            if (delErr) setStatus("فشل حذف المشاريع من Supabase.", true);
             await saveState();
             clearForm();
             renderList();
@@ -547,7 +556,11 @@
                 const idx = Number(del);
                 const current = state.projects[idx];
                 if (current?.id) {
-                    await supabase.from("projects").delete().eq("id", current.id);
+                    const { error: delErr } = await supabase.from("projects").delete().eq("id", current.id);
+                    if (delErr) {
+                        setStatus("فشل حذف المشروع من Supabase.", true);
+                        return;
+                    }
                 }
                 state.projects.splice(idx, 1);
                 if (editIndex === idx) clearForm();
@@ -567,7 +580,8 @@
                     images: p.images,
                     sort_order: i
                 }));
-                await supabase.from("projects").upsert(payload, { onConflict: "id" });
+                const { error: upsertErr } = await supabase.from("projects").upsert(payload, { onConflict: "id" });
+                if (upsertErr) setStatus("فشل مزامنة بعض المشاريع.", true);
             }
             const withoutIds = state.projects.filter((p) => !p.id);
             if (withoutIds.length > 0) {
@@ -577,7 +591,11 @@
                     images: p.images,
                     sort_order: withIds.length + i
                 }));
-                const { data } = await supabase.from("projects").insert(payload).select();
+                const { data, error: insertErr } = await supabase.from("projects").insert(payload).select();
+                if (insertErr) {
+                    setStatus("فشل إضافة مشاريع جديدة.", true);
+                    return;
+                }
                 const newIds = data || [];
                 let k = 0;
                 state.projects = state.projects.map((p) => {

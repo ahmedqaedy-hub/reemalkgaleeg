@@ -704,7 +704,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://tivrcukgaqcxmwrgfzde.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpdnJjdWtnYXFjeG13cmdmemRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNDA0MTAsImV4cCI6MjA4ODcxNjQxMH0.uRbENYPJP9oZZwvymnPeykqZToLtDdAOrvLFbJzlm8s";
+        const SUPABASE_ANON_KEY = "sb_publishable_h7zB-t1tyt0wnlLxDz6wPw_QGBWpxJM";
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const AUTO_SLIDE_MS = 2600;
@@ -731,17 +731,19 @@
 
         async function loadConfigFromSupabase() {
             try {
-                const { data: settings } = await supabase
+                const { data: settings, error: settingsErr } = await supabase
                     .from("settings")
                     .select("*")
                     .eq("id", 1)
                     .maybeSingle();
+                if (settingsErr) throw settingsErr;
 
-                const { data: projects } = await supabase
+                const { data: projects, error: projectsErr } = await supabase
                     .from("projects")
                     .select("*")
                     .order("sort_order", { ascending: true })
                     .order("created_at", { ascending: true });
+                if (projectsErr) throw projectsErr;
 
                 return {
                     projectLimit: Number(settings?.project_limit) || defaultConfig.projectLimit,
