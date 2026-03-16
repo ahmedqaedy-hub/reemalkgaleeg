@@ -1,644 +1,223 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة الأدمن | ريم الخليج</title>
-    <style>
-        :root {
-            --bg: #f7f1e5;
-            --surface: #ffffff;
-            --ink: #1f2937;
-            --muted: #6b7280;
-            --brand: #b91c1c;
-            --border: #e5d7bf;
-            --ok: #166534;
-            --danger: #991b1b;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
-            color: var(--ink);
-            background: linear-gradient(150deg, #fff8ea, var(--bg));
-        }
-
-        .container {
-            width: min(1100px, 94vw);
-            margin: 24px auto;
-        }
-
-        .auth-wrap {
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            padding: 20px;
-        }
-
-        .auth-card {
-            width: min(420px, 92vw);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: #fff;
-            padding: 18px;
-            box-shadow: 0 10px 22px rgba(15, 23, 42, .08);
-        }
-
-        .auth-card h2 {
-            margin: 0 0 8px;
-        }
-
-        .auth-error {
-            color: #991b1b;
-            min-height: 22px;
-            margin-top: 8px;
-            font-size: .92rem;
-        }
-
-        .top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: clamp(1.2rem, 3vw, 2rem);
-        }
-
-        .top a {
-            text-decoration: none;
-            border: 1px solid var(--border);
-            background: #fff;
-            color: var(--ink);
-            border-radius: 999px;
-            padding: 9px 14px;
-            font-weight: 700;
-        }
-
-        .layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .card {
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: var(--surface);
-            padding: 14px;
-        }
-
-        .card h2 {
-            margin: 0 0 10px;
-            font-size: 1.1rem;
-        }
-
-        label {
-            display: block;
-            font-weight: 700;
-            margin: 10px 0 6px;
-            font-size: .95rem;
-        }
-
-        input, textarea {
-            width: 100%;
-            border: 1px solid #d1d5db;
-            border-radius: 12px;
-            padding: 10px;
-            font: inherit;
-            background: #fff;
-        }
-
-        textarea {
-            min-height: 160px;
-            resize: vertical;
-        }
-
-        .grid2 {
-            display: grid;
-            gap: 10px;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .row {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 12px;
-        }
-
-        button {
-            border: 0;
-            border-radius: 999px;
-            padding: 9px 14px;
-            font: inherit;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .btn-brand {
-            background: var(--brand);
-            color: #fff;
-        }
-
-        .btn-light {
-            background: #fff;
-            border: 1px solid var(--border);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: #fff;
-        }
-
-        .hint {
-            color: var(--muted);
-            font-size: .9rem;
-            margin-top: 8px;
-            line-height: 1.8;
-        }
-
-        .status {
-            margin-top: 10px;
-            font-size: .92rem;
-            color: var(--ok);
-            min-height: 22px;
-        }
-
-        .projects-list {
-            margin-top: 14px;
-            display: grid;
-            gap: 10px;
-            max-height: 65vh;
-            overflow: auto;
-        }
-
-        .item {
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 10px;
-            background: #fffcf5;
-        }
-
-        .item-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .item b {
-            font-size: .96rem;
-        }
-
-        .item small {
-            color: var(--muted);
-            display: block;
-            margin-top: 3px;
-        }
-
-        @media (max-width: 900px) {
-            .layout {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الأدمن | ريم الخليج</title>
+  <style>
+    body {margin:0;font-family:"Cairo",sans-serif;background:#fff8ea;color:#1f2937;}
+    .shell {max-width:1100px;margin:20px auto;padding:0 16px;}
+    .card {background:#fff;border:1px solid #e5d7bf;border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(0,0,0,.05);}
+    .row {display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    button {padding:10px 14px;border-radius:999px;border:0;font-weight:700;cursor:pointer;}
+    .primary {background:#b91c1c;color:#fff;}
+    .light {background:#fff;border:1px solid #e5d7bf;}
+    input, textarea {width:100%;padding:10px;border:1px solid #d1d5db;border-radius:12px;font:inherit;}
+    textarea {min-height:120px;}
+    .grid {display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+    .muted {color:#6b7280;font-size:.9rem;}
+    #status,#authError {min-height:22px;font-weight:700;}
+    #authError {color:#b91c1c;}
+    #status {color:#166534;}
+    .list {display:grid;gap:10px;max-height:60vh;overflow:auto;}
+    .item {padding:10px;border:1px solid #e5d7bf;border-radius:14px;background:#fffcf5;}
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const js = document.getElementById("jsStatus");
+      if (js) js.textContent = "JS: on (early)";
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 </head>
 <body>
-    <div id="authWrap" class="auth-wrap">
-        <div class="auth-card">
-            <h2>دخول لوحة الأدمن</h2>
-            <p class="hint">أدخل الرقم السري للمتابعة.</p>
-            <label for="adminPassword">الرقم السري</label>
-            <input id="adminPassword" type="password" placeholder="••••••••">
-            <div class="row">
-                <button id="loginBtn" class="btn-brand" type="button">دخول</button>
-            </div>
-            <div id="authError" class="auth-error"></div>
-        </div>
+  <div class="shell">
+    <div class="card" id="authCard">
+      <div class="row" style="justify-content:space-between;">
+        <h2 style="margin:0;">دخول لوحة الأدمن</h2>
+        <span class="muted">نسخة: 2026-03-16-1</span>
+      </div>
+      <p class="muted" id="jsStatus">JS: off</p>
+      <input id="adminPassword" type="password" placeholder="الرقم السري" aria-label="الرقم السري" />
+      <div class="row">
+        <button id="loginBtn" class="primary" type="button">دخول</button>
+        <button id="forceLocal" class="light" type="button">تخطي Supabase</button>
+      </div>
+      <div id="debugLog" class="muted"></div>
+      <div id="authError"></div>
     </div>
 
-    <div id="adminApp" class="container" style="display:none;">
-        <div class="top">
-            <h1>لوحة إدارة المشاريع</h1>
-            <div class="row">
-                <a href="index.html">العودة للموقع</a>
-                <button id="logoutBtn" class="btn-light" type="button">تسجيل خروج</button>
-            </div>
+    <div class="card" id="appCard" style="display:none;">
+      <div class="row" style="justify-content:space-between;">
+        <h2 style="margin:0;">المشاريع</h2>
+        <button id="logoutBtn" class="light" type="button">تسجيل خروج</button>
+      </div>
+
+      <div class="grid">
+        <div>
+          <label>عدد المشاريع</label>
+          <input id="projectLimit" type="number" min="1" max="200" value="50" />
         </div>
-
-        <div class="layout">
-            <section class="card">
-                <h2>الإعدادات العامة</h2>
-                <div class="grid2">
-                    <div>
-                        <label for="projectLimit">عدد المشاريع المعروضة</label>
-                        <input id="projectLimit" type="number" min="1" max="200" value="50">
-                    </div>
-                    <div>
-                        <label for="imagesPerProject">الصور لكل مشروع</label>
-                        <input id="imagesPerProject" type="number" min="1" max="50" value="15">
-                    </div>
-                </div>
-
-                <h2 style="margin-top:16px;">إضافة/تعديل مشروع</h2>
-                <label for="title">اسم المشروع</label>
-                <input id="title" type="text" placeholder="مثال: مشروع فيلا الموالح">
-
-                <label for="location">الموقع</label>
-                <input id="location" type="text" placeholder="مثال: مسقط - الموالح">
-
-                <label for="images">روابط الصور (رابط في كل سطر)</label>
-                <textarea id="images" placeholder="https://example.com/p1.jpg&#10;https://example.com/p2.jpg"></textarea>
-                <p class="hint">يمكنك وضع 15 صورة أو أكثر، وسيتم عرض العدد المحدد في الإعدادات.</p>
-
-                <div class="row">
-                    <button id="saveProjectBtn" class="btn-brand" type="button">حفظ المشروع</button>
-                    <button id="clearFormBtn" class="btn-light" type="button">تفريغ الحقول</button>
-                </div>
-
-                <div class="row">
-                    <button id="saveAllBtn" class="btn-brand" type="button">حفظ كل البيانات</button>
-                    <button id="exportBtn" class="btn-light" type="button">تصدير JSON</button>
-                    <button id="importBtn" class="btn-light" type="button">استيراد JSON</button>
-                    <button id="resetBtn" class="btn-danger" type="button">مسح الكل</button>
-                </div>
-
-                <div class="status" id="status"></div>
-            </section>
-
-            <section class="card">
-                <h2>قائمة المشاريع</h2>
-                <div class="hint" id="stats"></div>
-                <div class="projects-list" id="projectsList"></div>
-            </section>
+        <div>
+          <label>الصور لكل مشروع</label>
+          <input id="imagesPerProject" type="number" min="1" max="50" value="15" />
         </div>
+      </div>
+
+      <h3>إضافة / تعديل مشروع</h3>
+      <input id="title" placeholder="اسم المشروع" />
+      <input id="location" placeholder="الموقع" />
+      <textarea id="images" placeholder="رابط في كل سطر"></textarea>
+      <div class="row">
+        <button id="saveProjectBtn" class="primary" type="button">حفظ المشروع</button>
+        <button id="clearFormBtn" class="light" type="button">تفريغ الحقول</button>
+        <button id="saveAllBtn" class="primary" type="button">حفظ الكل</button>
+      </div>
+
+      <div id="status"></div>
+
+      <h3>قائمة المشاريع</h3>
+      <div id="stats" class="muted"></div>
+      <div id="projectsList" class="list"></div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SUPABASE_URL = "https://tivrcukgaqcxmwrgfzde.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_h7zB-t1tyt0wnlLxDz6wPw_QGBWpxJM";
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  <script>
+    const SUPABASE_URL = "https://tivrcukgaqcxmwrgfzde.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_h7zB-t1tyt0wnlLxDz6wPw_QGBWpxJM";
+    const ADMIN_PASSWORD = "admin123";
+    const ADMIN_AUTH_KEY = "REEM_ADMIN_AUTH_V1";
 
-        const ADMIN_AUTH_KEY = "REEM_ADMIN_AUTH_V1";
-        const ADMIN_PASSWORD = "admin123";
+    const debugLog = document.getElementById("debugLog");
+    const log = (m) => { debugLog.textContent = m; console.log(m); };
+    document.getElementById("jsStatus").textContent = "JS: on";
 
-        let editIndex = -1;
-        let state = {
-            projectLimit: 50,
-            imagesPerProject: 15,
-            projects: []
-        };
+    let supabase = null;
+    let state = { projectLimit: 50, imagesPerProject: 15, projects: [] };
+    let editIndex = -1;
 
-        const el = {
-            projectLimit: document.getElementById("projectLimit"),
-            imagesPerProject: document.getElementById("imagesPerProject"),
-            title: document.getElementById("title"),
-            location: document.getElementById("location"),
-            images: document.getElementById("images"),
-            saveProjectBtn: document.getElementById("saveProjectBtn"),
-            clearFormBtn: document.getElementById("clearFormBtn"),
-            saveAllBtn: document.getElementById("saveAllBtn"),
-            exportBtn: document.getElementById("exportBtn"),
-            importBtn: document.getElementById("importBtn"),
-            resetBtn: document.getElementById("resetBtn"),
-            status: document.getElementById("status"),
-            projectsList: document.getElementById("projectsList"),
-            stats: document.getElementById("stats")
-        };
-        const authEl = {
-            authWrap: document.getElementById("authWrap"),
-            adminApp: document.getElementById("adminApp"),
-            password: document.getElementById("adminPassword"),
-            loginBtn: document.getElementById("loginBtn"),
-            authError: document.getElementById("authError"),
-            logoutBtn: document.getElementById("logoutBtn")
-        };
+    const el = {
+      authCard: document.getElementById("authCard"),
+      appCard: document.getElementById("appCard"),
+      authError: document.getElementById("authError"),
+      loginBtn: document.getElementById("loginBtn"),
+      logoutBtn: document.getElementById("logoutBtn"),
+      forceLocal: document.getElementById("forceLocal"),
+      projectLimit: document.getElementById("projectLimit"),
+      imagesPerProject: document.getElementById("imagesPerProject"),
+      title: document.getElementById("title"),
+      location: document.getElementById("location"),
+      images: document.getElementById("images"),
+      saveProjectBtn: document.getElementById("saveProjectBtn"),
+      clearFormBtn: document.getElementById("clearFormBtn"),
+      saveAllBtn: document.getElementById("saveAllBtn"),
+      status: document.getElementById("status"),
+      projectsList: document.getElementById("projectsList"),
+      stats: document.getElementById("stats"),
+    };
 
-        function setStatus(text, isError) {
-            el.status.textContent = text;
-            el.status.style.color = isError ? "#991b1b" : "#166534";
+    function showApp() { el.authCard.style.display = "none"; el.appCard.style.display = "block"; }
+    function showAuth(msg = "") { el.appCard.style.display = "none"; el.authCard.style.display = "block"; if (msg) el.authError.textContent = msg; }
+    function setStatus(msg, err=false){ el.status.textContent = msg; el.status.style.color = err ? "#b91c1c" : "#166534"; }
+    function parseImages(text){ return text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean); }
+    function renderList(){
+      el.projectsList.innerHTML = "";
+      el.stats.textContent = `إجمالي المشاريع: ${state.projects.length}`;
+      state.projects.forEach((p,i)=>{
+        const div=document.createElement("div");
+        div.className="item";
+        div.innerHTML=`<b>${p.title||"بدون عنوان"}</b><br><span class=\"muted\">${p.location||"بدون موقع"} | صور: ${(p.images||[]).length}</span><div class=\"row\" style=\"margin-top:8px;\"><button class=\"light\" data-edit=\"${i}\" type=\"button\">تعديل</button><button class=\"primary\" data-delete=\"${i}\" type=\"button\" style=\"background:#991b1b;\">حذف</button></div>`;
+        el.projectsList.appendChild(div);
+      });
+    }
+
+    async function loadRemote(){
+      if(!window.supabase) { log("مكتبة Supabase غير محمّلة"); return false; }
+      supabase = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+      const { data: settings, error: sErr } = await supabase.from("settings").select("*").eq("id",1).maybeSingle();
+      if(sErr) { log("خطأ settings:"+sErr.message); return false; }
+      state.projectLimit = Number(settings?.project_limit)||50;
+      state.imagesPerProject = Number(settings?.images_per_project)||15;
+      const { data: projects, error: pErr } = await supabase.from("projects").select("*").order("sort_order",{ascending:true}).order("created_at",{ascending:true});
+      if(pErr) { log("خطأ projects:"+pErr.message); return false; }
+      state.projects = (projects||[]).map(p=>({id:p.id,title:p.title,location:p.location,images:Array.isArray(p.images)?p.images:[]}));
+      return true;
+    }
+
+    async function saveSettings(){ if(!supabase) return; await supabase.from("settings").upsert({id:1,project_limit:state.projectLimit,images_per_project:state.imagesPerProject},{onConflict:"id"}); }
+
+    async function addOrUpdate(){
+      const title=el.title.value.trim();
+      const location=el.location.value.trim();
+      const images=parseImages(el.images.value);
+      if(!title) { setStatus("اكتب اسم المشروع",true); return; }
+      if(images.length===0){ setStatus("أضف رابط صورة واحد على الأقل",true); return; }
+      const payload={title,location,images};
+      if(editIndex>=0){
+        const current=state.projects[editIndex];
+        state.projects[editIndex]={...current,...payload};
+        if(supabase && current?.id){ await supabase.from("projects").update(payload).eq("id",current.id); }
+      } else {
+        let insertedId=null;
+        if(supabase){
+          const {data}=await supabase.from("projects").insert({...payload,sort_order:state.projects.length}).select().single();
+          insertedId=data?.id||null;
         }
+        state.projects.push({...payload,id:insertedId});
+      }
+      editIndex=-1;
+      el.saveProjectBtn.textContent="حفظ المشروع";
+      setStatus("تم الحفظ");
+      renderList();
+    }
 
-        function showAdminApp() {
-            authEl.authWrap.style.display = "none";
-            authEl.adminApp.style.display = "block";
-        }
+    el.loginBtn.onclick = async () => {
+      const pass = document.getElementById("adminPassword").value;
+      if(pass !== ADMIN_PASSWORD){ el.authError.textContent = "الرقم السري غير صحيح"; return; }
+      localStorage.setItem(ADMIN_AUTH_KEY,"ok");
+      el.authError.textContent = "";
+      const ok = await loadRemote();
+      if(!ok) log("العمل بالوضع المحلي فقط");
+      el.projectLimit.value = state.projectLimit;
+      el.imagesPerProject.value = state.imagesPerProject;
+      renderList();
+      showApp();
+    };
 
-        function showAuth() {
-            authEl.adminApp.style.display = "none";
-            authEl.authWrap.style.display = "grid";
-            authEl.password.value = "";
-        }
+    el.forceLocal.onclick = () => { showApp(); log("تم التخطي للوضع المحلي"); };
+    el.logoutBtn.onclick = () => { localStorage.removeItem(ADMIN_AUTH_KEY); showAuth(); };
+    el.clearFormBtn.onclick = () => { editIndex=-1; el.title.value=""; el.location.value=""; el.images.value=""; el.saveProjectBtn.textContent="حفظ المشروع"; };
+    el.saveProjectBtn.onclick = addOrUpdate;
+    el.saveAllBtn.onclick = async () => {
+      state.projectLimit = Number(el.projectLimit.value)||50;
+      state.imagesPerProject = Number(el.imagesPerProject.value)||15;
+      await saveSettings();
+      setStatus("تم حفظ الإعدادات");
+    };
+    el.projectsList.onclick = async (e)=>{
+      const edit=e.target.getAttribute("data-edit");
+      const del=e.target.getAttribute("data-delete");
+      if(edit){
+        editIndex=Number(edit);
+        const p=state.projects[editIndex];
+        el.title.value=p.title||""; el.location.value=p.location||""; el.images.value=(p.images||[]).join("\n");
+        el.saveProjectBtn.textContent="تحديث المشروع";
+      }
+      if(del){
+        const idx=Number(del);
+        const p=state.projects[idx];
+        state.projects.splice(idx,1);
+        if(supabase && p?.id){ await supabase.from("projects").delete().eq("id",p.id); }
+        renderList();
+      }
+    };
 
-        function parseImages(text) {
-            return text
-                .split(/\r?\n/)
-                .map((s) => s.trim())
-                .filter(Boolean);
-        }
-
-        async function loadState() {
-            try {
-                const { data: settings, error: settingsErr } = await supabase
-                    .from("settings")
-                    .select("*")
-                    .eq("id", 1)
-                    .maybeSingle();
-                if (settingsErr) throw settingsErr;
-
-                if (!settings) {
-                    const { error: insertErr } = await supabase.from("settings").insert({
-                        id: 1,
-                        project_limit: 50,
-                        images_per_project: 15
-                    });
-                    if (insertErr) throw insertErr;
-                }
-
-                const { data: settingsAfter, error: settingsAfterErr } = await supabase
-                    .from("settings")
-                    .select("*")
-                    .eq("id", 1)
-                    .maybeSingle();
-                if (settingsAfterErr) throw settingsAfterErr;
-
-                state.projectLimit = Number(settingsAfter?.project_limit) || 50;
-                state.imagesPerProject = Number(settingsAfter?.images_per_project) || 15;
-
-                const { data: projects, error: projectsErr } = await supabase
-                    .from("projects")
-                    .select("*")
-                    .order("sort_order", { ascending: true })
-                    .order("created_at", { ascending: true });
-                if (projectsErr) throw projectsErr;
-
-                state.projects = (projects || []).map((p) => ({
-                    id: p.id,
-                    title: p.title,
-                    location: p.location,
-                    images: Array.isArray(p.images) ? p.images : []
-                }));
-            } catch (err) {
-                setStatus("تعذر قراءة البيانات من Supabase.", true);
-            }
-        }
-
-        async function saveState() {
-            state.projectLimit = Math.max(1, Math.min(200, Number(el.projectLimit.value) || 50));
-            state.imagesPerProject = Math.max(1, Math.min(50, Number(el.imagesPerProject.value) || 15));
-            const { error: upsertErr } = await supabase.from("settings").upsert({
-                id: 1,
-                project_limit: state.projectLimit,
-                images_per_project: state.imagesPerProject
-            }, { onConflict: "id" });
-            if (upsertErr) setStatus("فشل حفظ الإعدادات في Supabase.", true);
-        }
-
-        function clearForm() {
-            editIndex = -1;
-            el.title.value = "";
-            el.location.value = "";
-            el.images.value = "";
-            el.saveProjectBtn.textContent = "حفظ المشروع";
-        }
-
-        function fillForm(project, index) {
-            editIndex = index;
-            el.title.value = project.title || "";
-            el.location.value = project.location || "";
-            el.images.value = Array.isArray(project.images) ? project.images.join("\n") : "";
-            el.saveProjectBtn.textContent = "تحديث المشروع";
-        }
-
-        function renderList() {
-            el.projectsList.innerHTML = "";
-            el.stats.textContent = `إجمالي المشاريع: ${state.projects.length}`;
-
-            state.projects.forEach((project, index) => {
-                const item = document.createElement("div");
-                item.className = "item";
-                item.innerHTML = `
-                    <div class="item-head">
-                        <div>
-                            <b>${project.title || "بدون عنوان"}</b>
-                            <small>${project.location || "بدون موقع"} | الصور: ${(project.images || []).length}</small>
-                        </div>
-                        <div class="row">
-                            <button class="btn-light" type="button" data-edit="${index}">تعديل</button>
-                            <button class="btn-danger" type="button" data-delete="${index}">حذف</button>
-                        </div>
-                    </div>
-                `;
-                el.projectsList.appendChild(item);
-            });
-        }
-
-        async function addOrUpdateProject() {
-            const title = el.title.value.trim();
-            const location = el.location.value.trim();
-            const images = parseImages(el.images.value);
-
-            if (!title) {
-                setStatus("اكتب اسم المشروع.", true);
-                return;
-            }
-            if (images.length === 0) {
-                setStatus("أضف رابط صورة واحد على الأقل.", true);
-                return;
-            }
-
-            const payload = { title, location, images };
-            if (editIndex >= 0) {
-                const current = state.projects[editIndex];
-                if (current?.id) {
-                    const { error: updateErr } = await supabase.from("projects").update({
-                        title,
-                        location,
-                        images,
-                        sort_order: editIndex
-                    }).eq("id", current.id);
-                    if (updateErr) throw updateErr;
-                    state.projects[editIndex] = { ...payload, id: current.id };
-                } else {
-                    const { data, error: insertErr } = await supabase.from("projects")
-                        .insert({ title, location, images, sort_order: editIndex })
-                        .select()
-                        .single();
-                    if (insertErr) throw insertErr;
-                    state.projects[editIndex] = { ...payload, id: data?.id };
-                }
-                setStatus("تم تحديث المشروع.");
-            } else {
-                const { data, error: insertErr } = await supabase.from("projects")
-                    .insert({ title, location, images, sort_order: state.projects.length })
-                    .select()
-                    .single();
-                if (insertErr) throw insertErr;
-                state.projects.push({ ...payload, id: data?.id });
-                setStatus("تمت إضافة المشروع.");
-            }
-
-            await saveState();
-            clearForm();
-            renderList();
-        }
-
-        function exportJSON() {
-            const data = JSON.stringify(state, null, 2);
-            navigator.clipboard.writeText(data)
-                .then(() => setStatus("تم نسخ JSON إلى الحافظة."))
-                .catch(() => setStatus("تعذر النسخ التلقائي. انسخ يدويًا من أدوات المتصفح.", true));
-        }
-
-        async function importJSON() {
-            const raw = prompt("ألصق JSON هنا:");
-            if (!raw) return;
-            try {
-                const parsed = JSON.parse(raw);
-                state = {
-                    projectLimit: Number(parsed.projectLimit) || 50,
-                    imagesPerProject: Number(parsed.imagesPerProject) || 15,
-                    projects: Array.isArray(parsed.projects) ? parsed.projects : []
-                };
-                await saveState();
-                await syncProjectsToDb();
-                syncInputs();
-                renderList();
-                setStatus("تم استيراد البيانات بنجاح.");
-            } catch (err) {
-                setStatus("تنسيق JSON غير صحيح أو فشل الحفظ.", true);
-            }
-        }
-
-        function syncInputs() {
-            el.projectLimit.value = state.projectLimit;
-            el.imagesPerProject.value = state.imagesPerProject;
-        }
-
-        el.saveProjectBtn.addEventListener("click", addOrUpdateProject);
-        el.clearFormBtn.addEventListener("click", clearForm);
-        el.saveAllBtn.addEventListener("click", async () => {
-            await saveState();
-            await syncProjectsToDb();
-            setStatus("تم حفظ كل البيانات. افتح الصفحة الرئيسية وستجد التحديثات.");
-        });
-        el.exportBtn.addEventListener("click", exportJSON);
-        el.importBtn.addEventListener("click", importJSON);
-        el.resetBtn.addEventListener("click", async () => {
-            const ok = confirm("هل تريد حذف كل المشاريع والإعدادات؟");
-            if (!ok) return;
-            state.projects = [];
-            const { error: delErr } = await supabase.from("projects").delete().neq("id", "00000000-0000-0000-0000-000000000000");
-            if (delErr) setStatus("فشل حذف المشاريع من Supabase.", true);
-            await saveState();
-            clearForm();
-            renderList();
-            setStatus("تم مسح كل البيانات.");
-        });
-
-        el.projectsList.addEventListener("click", async (e) => {
-            const edit = e.target.getAttribute("data-edit");
-            const del = e.target.getAttribute("data-delete");
-
-            if (edit !== null) {
-                fillForm(state.projects[Number(edit)], Number(edit));
-            }
-            if (del !== null) {
-                const idx = Number(del);
-                const current = state.projects[idx];
-                if (current?.id) {
-                    const { error: delErr } = await supabase.from("projects").delete().eq("id", current.id);
-                    if (delErr) {
-                        setStatus("فشل حذف المشروع من Supabase.", true);
-                        return;
-                    }
-                }
-                state.projects.splice(idx, 1);
-                if (editIndex === idx) clearForm();
-                await saveState();
-                renderList();
-                setStatus("تم حذف المشروع.");
-            }
-        });
-
-        async function syncProjectsToDb() {
-            const withIds = state.projects.filter((p) => p.id);
-            if (withIds.length > 0) {
-                const payload = withIds.map((p, i) => ({
-                    id: p.id,
-                    title: p.title,
-                    location: p.location,
-                    images: p.images,
-                    sort_order: i
-                }));
-                const { error: upsertErr } = await supabase.from("projects").upsert(payload, { onConflict: "id" });
-                if (upsertErr) setStatus("فشل مزامنة بعض المشاريع.", true);
-            }
-            const withoutIds = state.projects.filter((p) => !p.id);
-            if (withoutIds.length > 0) {
-                const payload = withoutIds.map((p, i) => ({
-                    title: p.title,
-                    location: p.location,
-                    images: p.images,
-                    sort_order: withIds.length + i
-                }));
-                const { data, error: insertErr } = await supabase.from("projects").insert(payload).select();
-                if (insertErr) {
-                    setStatus("فشل إضافة مشاريع جديدة.", true);
-                    return;
-                }
-                const newIds = data || [];
-                let k = 0;
-                state.projects = state.projects.map((p) => {
-                    if (p.id) return p;
-                    const next = newIds[k++];
-                    return { ...p, id: next?.id };
-                });
-            }
-        }
-
-        async function initApp() {
-            await loadState();
-            syncInputs();
-            renderList();
-        }
-
-        authEl.loginBtn.addEventListener("click", async () => {
-            const pass = authEl.password.value;
-            if (pass !== ADMIN_PASSWORD) {
-                authEl.authError.textContent = "الرقم السري غير صحيح.";
-                return;
-            }
-            localStorage.setItem(ADMIN_AUTH_KEY, "ok");
-            authEl.authError.textContent = "";
-            showAdminApp();
-            await initApp();
-        });
-
-        authEl.password.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") authEl.loginBtn.click();
-        });
-
-        authEl.logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem(ADMIN_AUTH_KEY);
-            showAuth();
-        });
-
-        if (localStorage.getItem(ADMIN_AUTH_KEY) === "ok") {
-            showAdminApp();
-            initApp();
-        } else {
-            showAuth();
-        }
-    </script>
+    if(localStorage.getItem(ADMIN_AUTH_KEY)==="ok"){
+      el.loginBtn.click();
+    }
+  </script>
 </body>
 </html>
